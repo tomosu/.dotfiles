@@ -2,7 +2,7 @@
 ; basic configurations
 (column-number-mode t)
 (line-number-mode t)
-(tool-bar-mode nil)
+; (tool-bar-mode nil)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 ; backups, those damned ~ files
 (setq make-backup-files nil)                 ; prevent backups
