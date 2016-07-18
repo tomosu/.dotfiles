@@ -1,3 +1,37 @@
+
+;;;;;;;;;;;;;;;;;
+
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
+;;;;;;;;;;;;;;;;
+
+(require 'auto-complete-config)
+(ac-config-default)
+(add-to-list 'ac-modes 'text-mode)         ;; text-modeでも自動的に有効にする
+(add-to-list 'ac-modes 'fundamental-mode)  ;; fundamental-mode
+(add-to-list 'ac-modes 'org-mode)
+(add-to-list 'ac-modes 'yatex-mode)
+(ac-set-trigger-key "TAB")
+(setq ac-use-menu-map t)       ;; 補完メニュー表示時にC-n/C-pで補完候補選択
+(setq ac-use-fuzzy t)          ;; 曖昧マッチ
+
+;;;;;;;;;;;;;;;
+
+(custom-set-variables
+ '(ac-etags-requires 1))
+
+(eval-after-load "etags"
+  '(progn
+     (ac-etags-setup)))
+
+(add-hook 'c-mode-common-hook 'ac-etags-ac-setup)
+(add-hook 'ruby-mode-common-hook 'ac-etags-ac-setup)
+(setq tags-table-list
+             '("~/JUCE" ))
+
 ;--------------------------------------------------------------------------------
 ; basic configurations
 (column-number-mode t)
@@ -24,18 +58,18 @@
 ;; (setq indent-tabs-mode nil)
 
 ; enable buffer list
-(define-key global-map "\C-x\C-b"  'electric-buffer-list)     
+(define-key global-map "\C-x\C-b"  'electric-buffer-list)
 
 ;--------------------------------------------------------------------------------
 ; faces
-(defvar my-font  "-*-fixed-medium-*-*-*-16-*-*-*-*-*-*-*"  "Default Normal Font")
-(defvar my-bold-font  "-*-fixed-bold-*-*-*-16-*-*-*-*-*-*-*"  "Default Bold Font")
+;(defvar my-font  "-*-fixed-medium-*-*-*-16-*-*-*-*-*-*-*"  "Default Normal Font")
+;(defvar my-bold-font  "-*-fixed-bold-*-*-*-16-*-*-*-*-*-*-*"  "Default Bold Font")
 
 ;; ;; appropriate fonts
-(set-face-font 'default                my-font)
+;(set-face-font 'default                my-font)
 ;; (set-face-font 'italic                 my-font)
 ;; (set-face-font 'modeline               my-font)
-(set-face-font 'bold                   my-bold-font)
+;(set-face-font 'bold                   my-bold-font)
 ;; (set-face-font 'bold-italic            my-bold-font)
 
 ;; (set-face-font 'font-lock-keyword-face my-bold-font)
@@ -55,8 +89,8 @@
 (set-face-background 'highlight         "#ffeedd")
 
 ; Bottom of buffer line
-(set-face-foreground 'modeline          "#800000")
-(set-face-background 'modeline          "#e0e0e0")
+;(set-face-foreground 'modeline          "#800000")
+;(set-face-background 'modeline          "#e0e0e0")
 
 ; Pointer
 (setq x-pointer-foreground-color        "black")
@@ -103,8 +137,8 @@
 
 
 ;; Any files in verilog mode should have their keywords colorized
-(add-hook 'verilog-mode-hook 
-	  '(lambda () 
+(add-hook 'verilog-mode-hook
+	  '(lambda ()
 	     (font-lock-mode 1)
 	     (setq verilog-indent-level             2
 		   verilog-indent-level-module      2
@@ -124,7 +158,7 @@
 		   )
 	     ))
 
-;; C++ mode 
+;; C++ mode
 (setq auto-mode-alist
       (append '(("\\.c$" . c++-mode)
 		("\\.cpp$" . c++-mode)
