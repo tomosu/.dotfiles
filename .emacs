@@ -18,8 +18,14 @@
 (setq ac-use-menu-map t)       ;; 補完メニュー表示時にC-n/C-pで補完候補選択
 (setq ac-use-fuzzy t)          ;; 曖昧マッチ
 
-;;;;;;;;;;;;;;;
 
+;; auto-complete c-headers
+(add-hook 'c-mode-hook
+	  (lambda ()
+	    (add-to-list 'ac-sources 'ac-source-c-headers)
+	    (add-to-list 'ac-sources 'ac-source-c-header-symbols t)))
+
+;; ac-etage
 (custom-set-variables
  '(ac-etags-requires 1))
 
@@ -29,8 +35,43 @@
 
 (add-hook 'c-mode-common-hook 'ac-etags-ac-setup)
 (add-hook 'ruby-mode-common-hook 'ac-etags-ac-setup)
-(setq tags-table-list
-             '("~/JUCE" ))
+;(setq tags-table-list
+;             '("~/JUCE" ))
+
+
+;;-----------------
+;; Python
+;;-----------------
+
+;; jedi
+(require 'epc)
+(require 'auto-complete-config)
+(require 'python)
+;;;;; PYTHONPATH上のソースコードがauto-completeの補完対象になる ;;;;;
+(setenv "PYTHONPATH" "/usr/local/lib/python2.7/site-packages")
+(require 'jedi)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+
+;; pyflakes
+(add-hook 'find-file-hook 'flymake-find-file-hook)
+(when (load "flymake" t)
+  (defun flymake-pyflakes-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "~/env4emacs/bin/pyflakes"  (list local-file))))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-pyflakes-init)))
+; show message on mini-buffer
+(defun flymake-show-help ()
+  (when (get-char-property (point) 'flymake-overlay)
+    (let ((help (get-char-property (point) 'help-echo)))
+      (if help (message "%s" help)))))
+(add-hook 'post-command-hook 'flymake-show-help)
+
 
 ;--------------------------------------------------------------------------------
 ; basic configurations
