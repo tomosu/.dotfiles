@@ -3,6 +3,8 @@ export PS1='\[\033[1;32m\]\u@\h\[\033[0m\] \[\033[1;34m\]\w\[\033[0m\] \[\033[1;
 alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 alias ctags='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
 
+export PATH=$PATH:/usr/local/bin/
+
 ## git-completion.sh
 source ~/.zsh/git-completion.bash
 
