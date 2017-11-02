@@ -5,6 +5,9 @@ alias ctags='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
 
 export PATH=$PATH:/usr/local/bin/
 
+## python3
+source ~/virtual_envs/tf_env/bin/activate
+
 ## git-completion.sh
 source ~/.zsh/git-completion.bash
 

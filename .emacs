@@ -35,8 +35,6 @@
 
 (add-hook 'c-mode-common-hook 'ac-etags-ac-setup)
 (add-hook 'ruby-mode-common-hook 'ac-etags-ac-setup)
-;(setq tags-table-list
-;             '("~/JUCE" ))
 
 
 ;;-----------------
@@ -48,13 +46,16 @@
 (require 'auto-complete-config)
 (require 'python)
 ;;;;; PYTHONPATH上のソースコードがauto-completeの補完対象になる ;;;;;
-(setenv "PYTHONPATH" "/usr/local/lib/python2.7/site-packages")
+(setenv "PYTHONPATH" "~/virtual_envs/tf_env/lib/python3.6/site-packages")
 (require 'jedi)
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 
 ;; pyflakes
-(add-hook 'find-file-hook 'flymake-find-file-hook)
+;(add-hook 'find-file-hook 'flymake-find-file-hook)
+(add-hook 'python-mode-hook
+	  '(lambda ()
+	     (flymake-mode t)))
 (when (load "flymake" t)
   (defun flymake-pyflakes-init ()
     (let* ((temp-file (flymake-init-create-temp-buffer-copy
@@ -62,9 +63,10 @@
            (local-file (file-relative-name
                         temp-file
                         (file-name-directory buffer-file-name))))
-      (list "~/env4emacs/bin/pyflakes"  (list local-file))))
+      (list "~/virtual_envs/tf_env/bin/pyflakes"  (list local-file))))
   (add-to-list 'flymake-allowed-file-name-masks
                '("\\.py\\'" flymake-pyflakes-init)))
+
 ; show message on mini-buffer
 (defun flymake-show-help ()
   (when (get-char-property (point) 'flymake-overlay)
